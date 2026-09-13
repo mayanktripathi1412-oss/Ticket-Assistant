@@ -1,0 +1,41 @@
+[
+  {
+    "article_id": "KB-001",
+    "title": "Reset a VPN password",
+    "category": "Network Access",
+    "tags": ["vpn", "password", "reset", "login"],
+    "body": "Employees can reset VPN passwords through the self-service identity portal.",
+    "steps": [
+      "Go to https://identity.example.local/reset.",
+      "Enter your company email address.",
+      "Approve the MFA prompt on your registered device.",
+      "Create a new password and wait five minutes before signing in to VPN."
+    ]
+  },
+  {
+    "article_id": "KB-002",
+    "title": "Fix Wi-Fi connection issues",
+    "category": "Connectivity",
+    "tags": ["wifi", "wireless", "network", "laptop"],
+    "body": "Most Wi-Fi issues are resolved by renewing the device network profile.",
+    "steps": [
+      "Forget the CorpNet Wi-Fi network.",
+      "Restart the laptop.",
+      "Reconnect to CorpNet using your company email and password.",
+      "If the issue continues, create a ticket with your laptop asset tag."
+    ]
+  },
+  {
+    "article_id": "KB-003",
+    "title": "Set up email on a mobile phone",
+    "category": "Collaboration",
+    "tags": ["email", "mobile", "phone", "outlook"],
+    "body": "Company email is supported through the Outlook mobile app.",
+    "steps": [
+      "Install the Outlook app from the official app store.",
+      "Sign in with your company email.",
+      "Approve the MFA prompt.",
+      "Allow the required device management policy."
+    ]
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "service": "VPN",
+    "aliases": ["globalprotect", "remote access"],
+    "status": "operational",
+    "last_checked": "2026-09-06T10:30:00+05:30",
+    "message": "VPN authentication and gateway connectivity are normal."
+  },
+  {
+    "service": "Email",
+    "aliases": ["outlook", "mail", "exchange"],
+    "status": "degraded",
+    "last_checked": "2026-09-06T10:25:00+05:30",
+    "message": "Some users may see delayed mailbox search results."
+  },
+  {
+    "service": "Wi-Fi",
+    "aliases": ["wifi", "wireless", "corpnet"],
+    "status": "operational",
+    "last_checked": "2026-09-06T10:20:00+05:30",
+    "message": "Corporate wireless access points are healthy."
+  }
+]

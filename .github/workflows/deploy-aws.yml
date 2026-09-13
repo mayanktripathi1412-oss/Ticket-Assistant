@@ -1,0 +1,66 @@
+name: Deploy To AWS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  CONTAINER_NAME: ticket-assistant
+  APP_PORT: "8501"
+  STORAGE_BACKEND: dynamodb
+
+jobs:
+  deploy:
+    name: Build And Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push image
+        env:
+          ECR_REPOSITORY_URL: ${{ vars.ECR_REPOSITORY_URL }}
+        run: |
+          IMAGE_URI="${ECR_REPOSITORY_URL}:${GITHUB_SHA}"
+          docker build -t "${IMAGE_URI}" .
+          docker push "${IMAGE_URI}"
+          echo "IMAGE_URI=${IMAGE_URI}" >> "${GITHUB_ENV}"
+
+      - name: Deploy container on EC2 through SSM
+        env:
+          EC2_INSTANCE_ID: ${{ vars.EC2_INSTANCE_ID }}
+          DYNAMODB_TABLE_PREFIX: ${{ vars.DYNAMODB_TABLE_PREFIX }}
+        run: |
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids "${EC2_INSTANCE_ID}" \
+            --document-name "AWS-RunShellScript" \
+            --comment "Deploy Ticket Assistant Streamlit container" \
+            --parameters commands="[
+              \"aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${IMAGE_URI%/*}\",
+              \"docker pull ${IMAGE_URI}\",
+              \"docker stop ${CONTAINER_NAME} || true\",
+              \"docker rm ${CONTAINER_NAME} || true\",
+              \"docker run -d --restart unless-stopped --name ${CONTAINER_NAME} -p ${APP_PORT}:8501 -e STORAGE_BACKEND=${STORAGE_BACKEND} -e AWS_REGION=${AWS_REGION} -e DYNAMODB_TABLE_PREFIX=${DYNAMODB_TABLE_PREFIX} ${IMAGE_URI}\"
+            ]" \
+            --query "Command.CommandId" \
+            --output text)
+          echo "SSM command id: ${COMMAND_ID}"
+          aws ssm wait command-executed --command-id "${COMMAND_ID}" --instance-id "${EC2_INSTANCE_ID}"

@@ -1,0 +1,30 @@
+[
+  {
+    "employee_id": "E1001",
+    "name": "Priya Nair",
+    "email": "priya.nair@example.local",
+    "department": "Finance",
+    "location": "Bengaluru"
+  },
+  {
+    "employee_id": "E1002",
+    "name": "Alex Morgan",
+    "email": "alex.morgan@example.local",
+    "department": "Engineering",
+    "location": "New York"
+  },
+  {
+    "employee_id": "E1003",
+    "name": "Sara Kim",
+    "email": "sara.kim@example.local",
+    "department": "Sales",
+    "location": "London"
+  },
+  {
+    "employee_id": "EMP1024",
+    "name": "Jordan Lee",
+    "email": "jordan.lee@example.local",
+    "department": "Operations",
+    "location": "Chicago"
+  }
+]

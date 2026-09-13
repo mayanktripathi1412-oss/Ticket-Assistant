@@ -1,0 +1,12 @@
+aws_region           = "us-east-1"
+project_name         = "ticket-assistant"
+environment          = "demo"
+instance_type        = "t3.micro"
+allowed_ingress_cidr = "YOUR_PUBLIC_IP/32"
+
+github_owner  = "YOUR_GITHUB_USERNAME_OR_ORG"
+github_repo   = "YOUR_REPOSITORY_NAME"
+github_branch = "main"
+
+# Set to false if your AWS account already has the GitHub OIDC provider.
+create_github_oidc_provider = true
